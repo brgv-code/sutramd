@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./apps/*"],
+      "geldata": ["libs/geldata/src/index.ts"]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+module default {
+
+
+    abstract type FileSystemNode {
+        required property created_at -> datetime {
+            default := datetime_current();
+        }
+        required property updated_at -> datetime {
+            default := datetime_current();
+        }
+    }
+type Folder extending FileSystemNode {
+  required name: str;
+  optional multi files -> MarkdownFile;
+  optional multi subfolders -> Folder;
+  optional parent -> Folder;
+}
+
+type MarkdownFile extending FileSystemNode {
+  required title: str;
+  required content: str;
+  optional folder -> Folder;
+}
+
+
+type User {
+    required email: str {
+        constraint exclusive;
+    };
+    required password: str;
+    name: str;
+    created_at: datetime {
+        default := datetime_current();
+    };
+}
+}

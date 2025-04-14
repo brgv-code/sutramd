@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/.env"],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"]
+  },
+  "nxCloudId": "67fcd25a49aafd7ecf938abd",
+  "targetDefaults": {
+    "build": {
+      "outputs": ["{projectRoot}/dist"],
+      "cache": true
+    },
+    "build:lib": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "startTargetName": "next:start",
+        "buildTargetName": "next:build",
+        "devTargetName": "next:dev",
+        "serveStaticTargetName": "serve-static",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      },
+      "exclude": ["apps/api-e2e/**/*"]
+    }
+  ],
+  "generators": {
+    "@nx/next": {
+      "application": {
+        "style": "tailwind",
+        "linter": "eslint"
+      }
+    }
+  }
+}

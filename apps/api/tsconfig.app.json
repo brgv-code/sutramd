@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/apps/api",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "removeComments": true,
+    "types": ["node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2021",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "strictPropertyInitialization": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+}

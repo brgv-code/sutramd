@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "ignorePatterns": ["dist", "node_modules", "coverage"],
+  "extends": [
+    "plugin:@nx/react",
+    "plugin:@nx/node",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@nx", "@typescript-eslint"]
+}
