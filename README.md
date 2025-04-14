@@ -1,76 +1,273 @@
 # SutraMD
 
-An Obsidian-like Markdown editor for the web, built with TipTap, React, and Next.js.
+A modern blog platform with a Next.js frontend and NestJS API backend, built as an Nx monorepo.
 
-## Features
+## Table of Contents
 
-- Rich text editing with Markdown support
-- Dark mode by default
-- Support for tables, task lists, code blocks with syntax highlighting
-- Preview mode
-- Autosave functionality
-- Customizable toolbar
-- Easily portable and reusable
+- [SutraMD](#sutramd)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Architecture](#architecture)
+    - [Data Flow](#data-flow)
+  - [Tech Stack](#tech-stack)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Development](#development)
+    - [Starting Development Servers](#starting-development-servers)
+    - [Working with Nx](#working-with-nx)
+  - [Project Structure](#project-structure)
+  - [Available Commands](#available-commands)
+  - [Database](#database)
+    - [Database Schema](#database-schema)
+    - [Migrations](#migrations)
+  - [API Documentation](#api-documentation)
+  - [Deployment](#deployment)
+    - [Preparing for Production](#preparing-for-production)
+    - [Deployment Options](#deployment-options)
+  - [Contributing](#contributing)
+  - [License](#license)
 
-## Installation
+## Overview
 
-```bash
-# Install in your React/Next.js project
-yarn add sutramd
+SutraMD is a modern blogging platform that allows users to create, manage, and publish markdown-based content. The application provides a clean user interface for writing and organizing blog posts, with robust backend services for content management.
 
-# Or using npm
-npm install sutramd
+## Architecture
+
+This project is built as an Nx monorepo with the following main applications:
+
+- **Frontend**: A Next.js application for the user-facing interface
+- **API**: A NestJS application providing RESTful services
+- **Shared Libraries**: Common code shared between applications
+
+### Data Flow
+
+```
+[Frontend (Next.js)] <---HTTP/REST---> [API (NestJS)] <---EdgeDB/GEL---> [Database]
+       │                                     │
+       │                                     │
+       └──────────shared types──────────────┘
+                (through libs)
 ```
 
-## Usage
+## Tech Stack
 
-### Basic Usage
+- **Frontend**:
 
-```jsx
-import { MarkdownEditor } from "sutramd";
+  - Next.js
+  - React
+  - TailwindCSS
+  - TypeScript
 
-function MyEditor() {
-  const handleChange = (markdown) => {
-    console.log("Markdown content:", markdown);
-    // Save to your backend, localStorage, etc.
-  };
+- **Backend**:
 
-  return (
-    <MarkdownEditor
-      initialContent="# Hello, world!\n\nThis is a **markdown** editor."
-      onChange={handleChange}
-      autosaveIntervalMs={5000} // 5 seconds
-    />
-  );
-}
+  - NestJS
+  - EdgeDB with GEL
+  - TypeScript
 
-export default MyEditor;
-```
+- **Tooling**:
+  - Nx monorepo
+  - ESLint
+  - Jest
+  - GitHub Actions
 
-### Props
+## Getting Started
 
-| Prop                 | Type     | Default     | Description                                                      |
-| -------------------- | -------- | ----------- | ---------------------------------------------------------------- |
-| `initialContent`     | string   | `''`        | Initial markdown content                                         |
-| `onChange`           | function | `undefined` | Callback that receives the markdown content when it changes      |
-| `autosaveIntervalMs` | number   | `3000`      | Interval in milliseconds between autosaves (set to 0 to disable) |
+### Prerequisites
+
+- Node.js 16+
+- Yarn
+- EdgeDB
+
+### Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/yourusername/sutramd.git
+   cd sutramd
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   yarn install
+   ```
+
+3. **Set up environment variables**:
+
+   ```bash
+   # For API
+   cp apps/api/.env.example apps/api/.env
+   # Update with your database credentials
+   ```
+
+4. **Start the EdgeDB database**:
+
+   ```bash
+   # If you have Docker installed
+   docker-compose up -d edgedb
+
+   # Or if you have EdgeDB CLI
+   edgedb project init
+   ```
+
+5. **Build the projects**:
+   ```bash
+   yarn build
+   ```
 
 ## Development
 
-```bash
-# Install dependencies
-yarn
+### Starting Development Servers
 
-# Start dev server
+To start both the API and frontend in development mode:
+
+```bash
+# Start everything
 yarn dev
 
-# Build for production
-yarn build
+# Start only API
+yarn start:api
 
-# Run production server
-yarn start
+# Start only frontend
+yarn start:frontend
 ```
+
+### Working with Nx
+
+This project uses Nx for managing the monorepo. Some useful commands:
+
+```bash
+# Run a command on a specific project
+nx run [project]:[command]
+
+# Run a command only on projects affected by your changes
+nx affected --target=[command]
+
+# Visualize your project dependency graph
+nx graph
+```
+
+## Project Structure
+
+```
+sutramd/
+├── apps/
+│   ├── api/               # NestJS Backend
+│   │   ├── src/
+│   │   │   ├── blog/      # Blog functionality
+│   │   │   ├── auth/      # Authentication services
+│   │   │   ├── user/      # User management
+│   │   │   ├── geldata/   # EdgeDB connection services
+│   │   │   └── dbschema/  # Generated database schema
+│   │   └── project.json   # API build configuration
+│   ├── frontend/          # Next.js Frontend
+│   │   ├── src/
+│   │   │   ├── pages/     # Next.js page components
+│   │   │   ├── components/# Reusable React components
+│   │   │   └── icons/     # UI icons
+│   │   ├── lib/           # Utility functions
+│   │   └── styles/        # CSS and styling
+│   └── api-e2e/           # API End-to-End Tests
+├── libs/
+│   └── gel/               # Shared EdgeDB/GEL Library
+└── nx.json                # Nx Configuration
+```
+
+## Available Commands
+
+| Command               | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `yarn dev`            | Start both frontend and API in development mode |
+| `yarn build`          | Build all projects                              |
+| `yarn build:api`      | Build only the API                              |
+| `yarn build:frontend` | Build only the frontend                         |
+| `yarn start:api`      | Start the API server                            |
+| `yarn start:frontend` | Start the frontend server                       |
+| `yarn lint`           | Run linting on all projects                     |
+| `yarn test`           | Run tests on all projects                       |
+| `yarn nx graph`       | Visualize the project dependency graph          |
+
+## Database
+
+SutraMD uses EdgeDB with the GEL client for database operations. The database schema is defined in the API project and schemas are automatically generated.
+
+### Database Schema
+
+The main entities in the database are:
+
+- **User**: Authentication and user management
+- **MarkdownFile**: Blog post content
+- **Folder**: Organization structure for content
+
+### Migrations
+
+To run database migrations:
+
+```bash
+cd apps/api
+yarn migrate:dev
+```
+
+## API Documentation
+
+The API documentation is available through Swagger UI when running the API server:
+
+```
+http://localhost:3001/docs
+```
+
+Key API endpoints:
+
+- `/blog`: Blog post management
+- `/auth`: Authentication
+- `/user`: User management
+
+## Deployment
+
+### Preparing for Production
+
+1. **Build all projects**:
+
+   ```bash
+   yarn build
+   ```
+
+2. **Set production environment variables**:
+   ```
+   # In your production environment
+   NODE_ENV=production
+   ```
+
+### Deployment Options
+
+- **Frontend**: Can be deployed to Vercel, Netlify, or any static hosting service
+- **API**: Can be deployed to any Node.js hosting service like Heroku, AWS, or GCP
+
+## Contributing
+
+1. **Fork the repository**
+2. **Create a feature branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Make your changes**
+4. **Run tests and linting**:
+   ```bash
+   yarn affected:test
+   yarn affected:lint
+   ```
+5. **Commit your changes**:
+   ```bash
+   git commit -m "Add some feature"
+   ```
+6. **Push to the branch**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+7. **Create a pull request**
 
 ## License
 
-MIT
+[MIT](LICENSE)
