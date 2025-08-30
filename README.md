@@ -2,31 +2,10 @@
 
 A modern blog platform with a Next.js frontend and NestJS API backend, built as an Nx monorepo.
 
-## Table of Contents
+## Demo
 
-- [SutraMD](#sutramd)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Architecture](#architecture)
-    - [Data Flow](#data-flow)
-  - [Tech Stack](#tech-stack)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-  - [Development](#development)
-    - [Starting Development Servers](#starting-development-servers)
-    - [Working with Nx](#working-with-nx)
-  - [Project Structure](#project-structure)
-  - [Available Commands](#available-commands)
-  - [Database](#database)
-    - [Database Schema](#database-schema)
-    - [Migrations](#migrations)
-  - [API Documentation](#api-documentation)
-  - [Deployment](#deployment)
-    - [Preparing for Production](#preparing-for-production)
-    - [Deployment Options](#deployment-options)
-  - [Contributing](#contributing)
-  - [License](#license)
+https://github.com/user-attachments/assets/122fb0d8-c9bb-4e5d-8e63-37fdd8d75b81
+
 
 ## Overview
 
